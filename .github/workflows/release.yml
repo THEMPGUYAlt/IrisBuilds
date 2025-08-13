@@ -26,9 +26,10 @@ jobs:
       - name: Extract plugin version from build.gradle.kts
         id: version
         run: |
-          VERSION=$(grep -oP 'val version = "\K[0-9]+\.[0-9]+\.[0-9]+' build.gradle.kts)
+          VERSION=$(grep -oP 'version\s*=\s*"\K[0-9]+\.[0-9]+\.[0-9]+' build.gradle.kts | head -n1)
           echo "PLUGIN_VERSION=$VERSION" >> $GITHUB_ENV
           echo "Detected version: $VERSION"
+
 
       - name: Build with Gradle
         run: ./gradlew iris
