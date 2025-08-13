@@ -26,10 +26,9 @@ jobs:
       - name: Extract plugin version from build.gradle.kts
         id: version
         run: |
-          VERSION=$(grep -oP 'version\s*=\s*"\K[0-9]+\.[0-9]+\.[0-9]+' build.gradle.kts | head -n1)
+          VERSION=$(grep -oP 'version\s*=\s*"\K[^"]+' build.gradle.kts | head -n1)
           echo "PLUGIN_VERSION=$VERSION" >> $GITHUB_ENV
           echo "Detected version: $VERSION"
-
 
       - name: Build with Gradle
         run: ./gradlew iris
@@ -46,6 +45,6 @@ jobs:
         with:
           tag_name: v${{ env.PLUGIN_VERSION }}
           name: v${{ env.PLUGIN_VERSION }}
-          files: build/libs/hackedserver-${{ env.PLUGIN_VERSION }}.jar
+          files: build/Iris-${{ env.PLUGIN_VERSION }}.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
